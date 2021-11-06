@@ -24,7 +24,7 @@ import asyncio
 import inspect
 import json
 import logging
-from discord.ext import commands
+from nextcord.ext import commands
 from typing import Any, Callable, Dict, Optional, Union
 from urllib.parse import quote
 
@@ -38,7 +38,7 @@ __log__ = logging.getLogger(__name__)
 
 
 class Node:
-    """A WaveLink Node instance.
+    """A Synclink Node instance.
 
     .. warning::
         You should not create :class:`Node` objects manually. Instead you should use, :func:`Client.initiate_node`.
@@ -155,7 +155,7 @@ class Node:
         Returns
         ---------
         Union[list, TrackPlaylist, None]:
-            A list of or TrackPlaylist instance of :class:`wavelink.player.Track` objects.
+            A list of or TrackPlaylist instance of :class:`Synclink.player.Track` objects.
             This could be None if no tracks were found.
         """
         backoff = ExponentialBackoff(base=1)
@@ -208,7 +208,7 @@ class Node:
 
         Returns
         ---------
-        :class:`wavelink.player.Track`
+        :class:`Synclink.player.Track`
             The track built from a Base64 identifier.
 
         Raises
@@ -263,11 +263,11 @@ class Node:
 
         Raises
         --------
-        WavelinkException
+        SynclinkException
             The hook provided was not a valid callable.
         """
         if not callable(func):
-            raise WavelinkException('Node hook must be a callable.')
+            raise SynclinkException('Node hook must be a callable.')
 
         self.hook = func
 

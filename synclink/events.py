@@ -33,9 +33,9 @@ class TrackEnd:
 
     Attributes
     ------------
-    player: :class:`wavelink.player.Player`
+    player: :class:`Synclink.player.Player`
         The player associated with the event.
-    track: :class:`wavelink.player.Track`
+    track: :class:`Synclink.player.Track`
         The track associated with the event.
     reason: str
         The reason the TrackEnd event was dispatched.
@@ -57,9 +57,9 @@ class TrackException:
 
     Attributes
     ------------
-    player: :class:`wavelink.player.Player`
+    player: :class:`Synclink.player.Player`
         The player associated with the event.
-    track: :class:`wavelink.player.Track`
+    track: :class:`Synclink.player.Track`
         The track associated with the event.
     error: str
         The error reason dispatched with the event.
@@ -81,9 +81,9 @@ class TrackStuck:
 
     Attributes
     ------------
-    player: :class:`wavelink.player.Player`
+    player: :class:`Synclink.player.Player`
         The player associated with the event.
-    track: :class:`wavelink.player.Track`
+    track: :class:`Synclink.player.Track`
         The track associated with the event.
     threshold: int
         The threshold associated with the event.
@@ -105,9 +105,9 @@ class TrackStart:
 
     Attributes
     ------------
-    player: :class:`wavelink.player.Player`
+    player: :class:`Synclink.player.Player`
         The player associated with the event.
-    track: :class:`wavelink.player.Track`
+    track: :class:`Synclink.player.Track`
         The track associated with the event.
     """
 
@@ -126,7 +126,7 @@ class WebsocketClosed:
 
     Attributes
     ------------
-    player: :class:`wavelink.player.Player`
+    player: :class:`Synclink.player.Player`
         The player associated with the event.
     reason: str
         The reason the event was dispatched.

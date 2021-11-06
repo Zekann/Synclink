@@ -1,8 +1,8 @@
-__title__ = 'WaveLink'
-__author__ = 'EvieePy'
+__title__ = 'Synclink'
+__author__ = 'Zekann'
 __license__ = 'MIT'
-__copyright__ = 'Copyright 2019-2021 (c) PythonistaGuild'
-__version__ = '0.9.10'
+__copyright__ = 'Copyright 2021 (c) Zekann'
+__version__ = '1.0.0a'
 
 from .client import Client
 from .errors import *

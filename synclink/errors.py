@@ -22,25 +22,25 @@ SOFTWARE.
 """
 
 
-class WavelinkException(Exception):
-    """Base Wavelink Exception."""
+class SynclinkException(Exception):
+    """Base Synclink Exception."""
 
 
-class NodeOccupied(WavelinkException):
+class NodeOccupied(SynclinkException):
     """Exception raised when node identifiers conflict."""
 
 
-class InvalidIDProvided(WavelinkException):
-    """Exception raised when an invalid ID is passed somewhere in Wavelink."""
+class InvalidIDProvided(SynclinkException):
+    """Exception raised when an invalid ID is passed somewhere in Synclink."""
 
 
-class ZeroConnectedNodes(WavelinkException):
+class ZeroConnectedNodes(SynclinkException):
     """Exception raised when an operation is attempted with nodes, when there are None connected."""
 
 
-class AuthorizationFailure(WavelinkException):
+class AuthorizationFailure(SynclinkException):
     """Exception raised when an invalid password is provided toa node."""
 
 
-class BuildTrackError(WavelinkException):
+class BuildTrackError(SynclinkException):
     """Exception raised when a track is failed to be decoded and re-built."""

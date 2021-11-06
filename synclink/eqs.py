@@ -50,7 +50,7 @@ class Equalizer:
         return self._name
 
     def __repr__(self):
-        return f'<wavelink.eqs.Equalizer: {self._name}, Raw: {self.eq}>'
+        return f'<synclink.eqs.Equalizer: {self._name}, Raw: {self.eq}>'
 
     @property
     def name(self):

@@ -23,8 +23,8 @@ SOFTWARE.
 import logging
 import time
 import re
-from discord.ext import commands
-from discord.gateway import DiscordWebSocket
+from nextcord.ext import commands
+from nextcor.gateway import WebSocket
 from typing import Optional, Union
 
 from .errors import *
@@ -37,7 +37,7 @@ __log__ = logging.getLogger(__name__)
 
 
 class Track:
-    """Wavelink Track object.
+    """Synclink Track object.
 
     Attributes
     ------------
@@ -125,15 +125,15 @@ class TrackPlaylist:
 
 
 class Player:
-    """Wavelink Player class.
+    """Synclink Player class.
 
     Attributes
     ------------
-    bot: Union[discord.ext.commands.Bot, discord.ext.commands.AutoShardedBot]
-        The discord Bot instance.
+    bot: Union[nextcord.ext.commands.Bot, nextcord.ext.commands.AutoShardedBot]
+        The nextcord Bot instance.
     guild_id: int
         The guild ID the player is connected to.
-    node: :class:`wavelink.node.Node`
+    node: :class:`Synclink.node.Node`
         The node the player belongs to.
     volume: int
         The players volume.
@@ -295,7 +295,7 @@ class Player:
     async def play(self, track: Track, *, replace: bool = True, start: int = 0, end: int = 0) -> None:
         """|coro|
 
-        Play a WaveLink Track.
+        Play a Synclink Track.
 
         Parameters
         ------------
@@ -426,7 +426,7 @@ class Player:
     async def change_node(self, identifier: str = None) -> None:
         """|coro|
 
-        Change the players current :class:`wavelink.node.Node`. Useful when a Node fails or when changing regions.
+        Change the players current :class:`Synclink.node.Node`. Useful when a Node fails or when changing regions.
         The change Node behaviour allows for near seamless fallbacks and changeovers to occur.
 
         Parameters
@@ -440,9 +440,9 @@ class Player:
             node = client.get_node(identifier)
 
             if not node:
-                raise WavelinkException(f'No Nodes matching identifier:: {identifier}')
+                raise SynclinkException(f'No Nodes matching identifier:: {identifier}')
             elif node == self.node:
-                raise WavelinkException('Node identifiers must not be the same while changing.')
+                raise SynclinkException('Node identifiers must not be the same while changing.')
         else:
             self.node.close()
             node = None
@@ -458,7 +458,7 @@ class Player:
 
             if not node:
                 self.node.open()
-                raise WavelinkException('No Nodes available for changeover.')
+                raise SynclinkException('No Nodes available for changeover.')
 
         self.node.open()
 

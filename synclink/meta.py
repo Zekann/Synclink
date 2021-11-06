@@ -6,8 +6,8 @@ from .events import *
 from .node import Node
 
 
-class WavelinkMixin:
-    """Wavelink Mixin class.
+class SynclinkMixin:
+    """Synclink Mixin class.
 
     .. warning::
         You must use this class in conjuction with a discord.py `commands.Cog`.
@@ -16,11 +16,11 @@ class WavelinkMixin:
     ---------
     .. code:: py
 
-        # WavelinkMixin must be used alongside a discord.py cog.
-        class MusicCog(commands.Cog, wavelink.WavelinkMixin):
+        # SynclinkMixin must be used alongside a discord.py cog.
+        class MusicCog(commands.Cog, Synclink.SynclinkMixin):
 
-            @wavelink.Wavelink.listener()
-            async def on_node_ready(self, node: wavelink.Node):
+            @Synclink.Synclink.listener()
+            async def on_node_ready(self, node: Synclink.Node):
                  print(f'Node {node.identifier} is ready!')
 
 
@@ -33,7 +33,7 @@ class WavelinkMixin:
 
         for name, element in inspect.getmembers(cls):
             try:
-                element_listeners = getattr(element, '__wavelink_listeners__')
+                element_listeners = getattr(element, '__Synclink_listeners__')
             except AttributeError:
                 continue
 
@@ -44,11 +44,11 @@ class WavelinkMixin:
                     listeners[listener] = [element.__name__]
 
         self = super().__new__(cls)
-        cls.__wavelink_listeners__ = listeners
+        cls.__Synclink_listeners__ = listeners
 
         return self
 
-    async def on_wavelink_error(self, listener,  error: Exception):
+    async def on_synclink_error(self, listener,  error: Exception):
         """Event dispatched when an error is raised during mixin listener dispatch.
 
         Parameters
@@ -62,7 +62,7 @@ class WavelinkMixin:
         traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
 
     async def on_node_ready(self, node: Node):
-        """Listener dispatched when a :class:`wavelink.node.Node` is connected and ready.
+        """Listener dispatched when a :class:`Synclink.node.Node` is connected and ready.
 
         Parameters
         ------------
@@ -78,7 +78,7 @@ class WavelinkMixin:
         node: Node
             The node associated with the listener event.
         payload: TrackStart
-            The :class:`wavelink.events.TrackStart` payload.
+            The :class:`Synclink.events.TrackStart` payload.
         """
 
     async def on_track_end(self, node: Node, payload: TrackEnd):
@@ -89,7 +89,7 @@ class WavelinkMixin:
         node: Node
             The node associated with the listener event.
         payload: TrackEnd
-            The :class:`wavelink.events.TrackEnd` payload.
+            The :class:`Synclink.events.TrackEnd` payload.
         """
 
     async def on_track_stuck(self, node: Node, payload: TrackStuck):
@@ -100,7 +100,7 @@ class WavelinkMixin:
         node: Node
             The node associated with the listener event.
         payload: TrackStuck
-            The :class:`wavelink.events.TrackStuck` payload.
+            The :class:`Synclink.events.TrackStuck` payload.
         """
 
     async def on_track_exception(self, node: Node, payload: TrackException):
@@ -111,7 +111,7 @@ class WavelinkMixin:
         node: Node
             The node associated with the listener event.
         payload: TrackException
-            The :class:`wavelink.events.TrackException` payload.
+            The :class:`Synclink.events.TrackException` payload.
         """
 
     async def on_websocket_closed(self, node: Node, payload: WebsocketClosed):
@@ -122,15 +122,15 @@ class WavelinkMixin:
         node: Node
             The node associated with the listener event.
         payload: WebsocketClosed
-            The :class:`wavelink.events.WebsocketClosed` payload.
+            The :class:`Synclink.events.WebsocketClosed` payload.
         """
 
     @staticmethod
     def listener(event: str = None):
-        """Decorator that adds a coroutine as a Wavelink event listener.
+        """Decorator that adds a coroutine as a Synclink event listener.
 
         .. note::
-            This must be used within a :class:`wavelink.WavelinkMixin` subclass in order to work.
+            This must be used within a :class:`Synclink.SynclinkMixin` subclass in order to work.
 
         Parameters
         ------------
@@ -141,7 +141,7 @@ class WavelinkMixin:
         ---------
         .. code:: py
 
-                @wavelink.WavelinkMixin.listener(event="on_node_ready")
+                @Synclink.SynclinkMixin.listener(event="on_node_ready")
                 async def node_ready_event(node):
                     print(f'Node {node.indentifier} ready!')
 
@@ -152,14 +152,14 @@ class WavelinkMixin:
         """
         def wrapper(func):
             if not inspect.iscoroutinefunction(func):
-                raise TypeError('Wavelink listeners must be coroutines.')
+                raise TypeError('Synclink listeners must be coroutines.')
 
             name = event or func.__name__
 
             try:
-                func.__wavelink_listeners__.append(name)
+                func.synclink.append(name)
             except AttributeError:
-                func.__wavelink_listeners__ = [name]
+                func.synclink = [name]
 
             return func
         return wrapper

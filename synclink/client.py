@@ -23,7 +23,7 @@ SOFTWARE.
 import aiohttp
 import asyncio
 import logging
-from discord.ext import commands
+from nextcord.ext import commands
 from functools import partial
 from json import dumps
 from typing import Optional, Union
@@ -37,19 +37,19 @@ __log__ = logging.getLogger(__name__)
 
 
 class Client:
-    """The main WaveLink client."""
+    """The main Synclink client."""
 
     def __new__(cls, *args, **kwargs):
-        cls.__qualname__ = 'wavelink.Client'
+        cls.__qualname__ = 'Synclink.Client'
 
         try:
             bot = kwargs['bot']
         except KeyError:
-            msg = 'wavelink.Client: bot is a required keyword only argument which is missing.'
-            raise WavelinkException(msg)
+            msg = 'Synclink.Client: bot is a required keyword only argument which is missing.'
+            raise SynclinkException(msg)
 
         if not isinstance(bot, (commands.Bot, commands.AutoShardedBot)):
-            msg = f'wavelink.Client expected type <commands.Bot or commands.AutoShardedBot> not {type(bot)}'
+            msg = f'Synclink.Client expected type <commands.Bot or commands.AutoShardedBot> not {type(bot)}'
             raise TypeError(msg)
 
         try:
@@ -58,7 +58,7 @@ class Client:
             return super().__new__(cls)
 
         for handler in update_handlers:
-            if handler.__self__.__class__.__qualname__ == 'wavelink.Client':
+            if handler.__self__.__class__.__qualname__ == 'Synclink.Client':
                 bot.remove_listener(handler, 'on_socket_response')
 
         return super().__new__(cls)
@@ -98,12 +98,12 @@ class Client:
 
     @property
     def players(self) -> dict:
-        """Return the WaveLink clients current players across all nodes.
+        """Return the Synclink clients current players across all nodes.
 
         Returns
         ---------
         dict:
-            A dict of the current WaveLink players.
+            A dict of the current Synclink players.
         """
         return self._get_players()
 
@@ -112,7 +112,7 @@ class Client:
 
         for cog in self.bot.cogs.values():
             try:
-                listeners = cog.__wavelink_listeners__[name]
+                listeners = cog.__synclink_listeners__[name]
             except (AttributeError, KeyError):
                 continue
 
@@ -131,7 +131,7 @@ class Client:
 
     def _future_callback(self, cog, listener, fut):
         if fut.exception():
-            self.loop.create_task(cog.on_wavelink_error(listener, fut.exception()))
+            self.loop.create_task(cog.on_synclink_error(listener, fut.exception()))
 
     async def get_tracks(self, query: str, *, retry_on_failure: bool = True) -> Optional[list]:
         """|coro|
@@ -157,7 +157,7 @@ class Client:
         Raises
         --------
         ZeroConnectedNodes
-            There are no :class:`wavelink.node.Node`s currently connected.
+            There are no :class:`Synclink.node.Node`s currently connected.
         """
         node = self.get_best_node()
 
@@ -178,13 +178,13 @@ class Client:
 
         Returns
         ---------
-        :class:`wavelink.player.Track`
+        :class:`Synclink.player.Track`
             The track built from a Base64 identifier.
 
         Raises
         --------
         ZeroConnectedNodes
-            There are no :class:`wavelink.node.Node`s currently connected.
+            There are no :class:`Synclink.node.Node`s currently connected.
         BuildTrackError
             Decoding and building the track failed.
         """
@@ -213,18 +213,18 @@ class Client:
 
         Returns
         ---------
-        Optional[:class:`wavelink.node.Node`]
-            The Node matching the given identifier. This could be None if no :class:`wavelink.node.Node` could be found.
+        Optional[:class:`Synclink.node.Node`]
+            The Node matching the given identifier. This could be None if no :class:`Synclink.node.Node` could be found.
         """
         return self.nodes.get(identifier, None)
 
     def get_best_node(self) -> Optional[Node]:
-        """Return the best available :class:`wavelink.node.Node` across the :class:`.Client`.
+        """Return the best available :class:`Synclink.node.Node` across the :class:`.Client`.
 
         Returns
         ---------
-        Optional[:class:`wavelink.node.Node`]
-            The best available :class:`wavelink.node.Node` available to the :class:`.Client`.
+        Optional[:class:`Synclink.node.Node`]
+            The best available :class:`Synclink.node.Node` available to the :class:`.Client`.
         """
         nodes = [n for n in self.nodes.values() if n.is_available]
         if not nodes:
@@ -242,9 +242,9 @@ class Client:
 
         Returns
         ---------
-        Optional[:class:`wavelink.node.Node`]
+        Optional[:class:`Synclink.node.Node`]
             The best available Node matching the given region.
-            This could be None if no :class:`wavelink.node.Node` could be found.
+            This could be None if no :class:`Synclink.node.Node` could be found.
         """
         nodes = [n for n in self.nodes.values() if n.region.lower() == region.lower() and n.is_available]
         if not nodes:
@@ -262,9 +262,9 @@ class Client:
 
         Returns
         ---------
-        Optional[:class:`wavelink.node.Node`]
+        Optional[:class:`Synclink.node.Node`]
             The best available Node matching the given Shard ID.
-            This could be None if no :class:`wavelink.node.Node` could be found.
+            This could be None if no :class:`Synclink.node.Node` could be found.
         """
         nodes = [n for n in self.nodes.values() if n.shard_id == shard_id and n.is_available]
         if not nodes:
@@ -295,14 +295,14 @@ class Client:
         Returns
         ---------
         Player
-            The :class:`wavelink.player.Player` associated with the given guild ID.
+            The :class:`Synclink.player.Player` associated with the given guild ID.
 
         Raises
         --------
         InvalidIDProvided
             The given ID does not yield a valid guild or Node.
         ZeroConnectedNodes
-            There are no :class:`wavelink.node.Node`'s currently connected.
+            There are no :class:`Synclink.node.Node`'s currently connected.
         """
         players = self.players
 
@@ -384,11 +384,11 @@ class Client:
         password: str
             The password to authenticate on the server.
         region: str
-            The region as a valid discord.py guild.region to associate the :class:`wavelink.node.Node` with.
+            The region as a valid discord.py guild.region to associate the :class:`Synclink.node.Node` with.
         identifier: str
-            A unique identifier for the :class:`wavelink.node.Node`
+            A unique identifier for the :class:`Synclink.node.Node`
         shard_id: Optional[int]
-            An optional Shard ID to associate with the :class:`wavelink.node.Node`. Could be None.
+            An optional Shard ID to associate with the :class:`Synclink.node.Node`. Could be None.
         secure: bool
             Whether the websocket should be started with the secure wss protocol.
         heartbeat: Optional[float]
@@ -396,7 +396,7 @@ class Client:
 
         Returns
         ---------
-        :class:`wavelink.node.Node`
+        :class:`Synclink.node.Node`
             Returns the initiated Node in a connected state.
 
         Raises

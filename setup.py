@@ -49,18 +49,18 @@ if ON_RTD:
 with open(ROOT / 'README.rst', encoding='utf-8') as f:
     README = f.read()
 
-with open(ROOT / 'wavelink' / '__init__.py', encoding='utf-8') as f:
+with open(ROOT / 'synclink' / '__init__.py', encoding='utf-8') as f:
     VERSION = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE).group(1)
 
 
 setuptools.setup(
-    name='wavelink',
-    author='EvieePy',
-    url='https://github.com/EvieePy/Wavelink',
+    name='synclink',
+    author='Zekann',
+    url='https://github.com/Zekann/Synclink',
     version=VERSION,
-    packages=['wavelink'],
+    packages=['synclink'],
     license='MIT',
-    description='A versatile LavaLink wrapper for Discord.py',
+    description='A versatile LavaLink wrapper for nextcord.py',
     long_description=README,
     include_package_data=True,
     install_requires=REQUIREMENTS,
