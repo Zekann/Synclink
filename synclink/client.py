@@ -40,7 +40,7 @@ class Client:
     """The main Synclink client."""
 
     def __new__(cls, *args, **kwargs):
-        cls.__qualname__ = 'Synclink.Client'
+        cls.__qualname__ = 'synclink.Client'
 
         try:
             bot = kwargs['bot']
