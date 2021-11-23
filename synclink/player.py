@@ -24,7 +24,7 @@ import logging
 import time
 import re
 from nextcord.ext import commands
-from nextcor.gateway import WebSocket
+from nextcord.gateway import WebSocket
 from typing import Optional, Union
 
 from .errors import *
