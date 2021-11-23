@@ -24,7 +24,7 @@ import logging
 import time
 import re
 from nextcord.ext import commands
-from nextcord.gateway import WebSocket
+from nextcord.gateway import DiscordWebSocket
 from typing import Optional, Union
 
 from .errors import *
