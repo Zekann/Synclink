@@ -9,8 +9,9 @@
 
 .. image:: https://img.shields.io/github/license/EvieePy/Wavelink.svg
     :target: LICENSE
+    
+This is a fork of wavelink (https://github.com/PythonistaGuild/Wavelink) adapted for nextcord library <https://github.com/nextcord/nextcord>
 
-A robust and powerful Lavalink wrapper for `Discord.py <https://github.com/Rapptz/discord.py>`_!
 
 Documentation
 ---------------------------
