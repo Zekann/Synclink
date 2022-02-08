@@ -1,1 +1,7 @@
-git+https://github.com/Rapptz/discord.py
+sphinx
+docutils<0.18
+sphinxcontrib-napoleon
+sphinxcontrib-asyncio
+sphinxcontrib-websupport
+Pygments
+furo

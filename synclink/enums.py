@@ -1,6 +1,6 @@
 """MIT License
 
-Copyright (c) 2019-2022 PythonistaGuild
+Copyright (c) 2019-2021 PythonistaGuild
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -21,19 +21,31 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-__title__ = "WaveLink"
-__author__ = "PythonistaGuild, EvieePy"
-__license__ = "MIT"
-__copyright__ = "Copyright 2019-2022 (c) PythonistaGuild, EvieePy"
-__version__ = "1.0.0"
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 
-from .backoff import Backoff
-from .enums import *
-from .errors import *
-from .player import *
-from .pool import *
-from .stats import Stats
-from .tracks import *
-from .queue import *
-from . import abc as abc
+if TYPE_CHECKING:
+    from enum import Enum
+else:
+    from discord import Enum
+
+__all__ = (
+    "ErrorSeverity",
+    "LoadType",
+)
+
+
+class ErrorSeverity(Enum):
+    common = "COMMON"
+    suspicious = "SUSPICIOUS"
+    fault = "FAULT"
+
+
+class LoadType(Enum):
+    track_loaded = "TRACK_LOADED"
+    playlist_loaded = "PLAYLIST_LOADED"
+    search_result = "SEARCH_RESULT"
+    no_matches = "NO_MATCHES"
+    load_failed = "LOAD_FAILED"
