@@ -58,7 +58,7 @@ setuptools.setup(
     author='Zekann',
     url='https://github.com/Zekann/Synclink',
     version=VERSION,
-    packages=['synclink'],
+    packages=['synclink', 'synclink.ext.spotify', 'synclink.types'],
     license='MIT',
     description='A fork of LavaLink wrapper for nextcord.py',
     long_description=README,

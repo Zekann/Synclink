@@ -26,8 +26,8 @@ import datetime
 import logging
 from typing import Any, Dict, Union, Optional
 
-import discord
-from discord.channel import VoiceChannel
+import nextcord
+from nextcord.channel import VoiceChannel
 
 from . import abc
 from .pool import Node, NodePool
@@ -43,11 +43,11 @@ logger: logging.Logger = logging.getLogger(__name__)
 
 
 VoiceChannel = Union[
-    discord.VoiceChannel, discord.StageChannel
+    nextcord.VoiceChannel, nextcord.StageChannel
 ]  # todo: VocalGuildChannel?
 
 
-class Player(discord.VoiceProtocol):
+class Player(nextcord.VoiceProtocol):
     """WaveLink Player object.
 
     This class subclasses :class:`discord.VoiceProtocol` and such should be treated as one with additions.
@@ -68,20 +68,20 @@ class Player(discord.VoiceProtocol):
         You should instead use :meth:`discord.VoiceChannel.connect()` and pass the player object to the cls kwarg.
     """
 
-    def __call__(self, client: discord.Client, channel: VoiceChannel):
-        self.client: discord.Client = client
+    def __call__(self, client: nextcord.Client, channel: VoiceChannel):
+        self.client: nextcord.Client = client
         self.channel: VoiceChannel = channel
 
         return self
 
     def __init__(
         self,
-        client: discord.Client = MISSING,
+        client: nextcord.Client = MISSING,
         channel: VoiceChannel = MISSING,
         *,
         node: Node = MISSING,
     ):
-        self.client: discord.Client = client
+        self.client: nextcord.Client = client
         self.channel: VoiceChannel = channel
 
         if node is MISSING:
@@ -102,12 +102,12 @@ class Player(discord.VoiceProtocol):
         self.queue = WaitQueue()
 
     @property
-    def guild(self) -> discord.Guild:
+    def guild(self) -> nextcord.Guild:
         """The :class:`discord.Guild` this :class:`Player` is in."""
         return self.channel.guild
 
     @property
-    def user(self) -> discord.ClientUser:
+    def user(self) -> nextcord.ClientUser:
         """The :class:`discord.ClientUser` of the :class:`discord.Client`"""
         return self.client.user  # type: ignore
 
@@ -184,7 +184,7 @@ class Player(discord.VoiceProtocol):
 
             self.cleanup()
 
-    async def move_to(self, channel: discord.VoiceChannel) -> None:
+    async def move_to(self, channel: nextcord.VoiceChannel) -> None:
         """|coro|
 
         Moves the player to a different voice channel.

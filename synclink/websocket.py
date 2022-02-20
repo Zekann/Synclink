@@ -28,7 +28,7 @@ from typing import Any, Dict, TYPE_CHECKING, Tuple, Optional
 
 import aiohttp
 
-import wavelink
+import synclink
 from .utils import MISSING
 
 if TYPE_CHECKING:
@@ -57,7 +57,7 @@ class Websocket:
         return {
             "Authorization": self.node._password,
             "User-Id": str(self.node.bot.user.id),
-            "Client-Name": "WaveLink",
+            "Client-Name": "Synclink",
             'Resume-Key': self.node.resume_key
         }
 
@@ -68,7 +68,7 @@ class Websocket:
         if self.is_connected():
             assert isinstance(self.websocket, aiohttp.ClientWebSocketResponse)
             await self.websocket.close(
-                code=1006, message=b"WaveLink: Attempting reconnection."
+                code=1006, message=b"Synclink: Attempting reconnection."
             )
 
         try:
@@ -101,7 +101,7 @@ class Websocket:
             await self.send(**resume)
 
     async def listen(self) -> None:
-        backoff = wavelink.Backoff(base=1, maximum_time=60, maximum_tries=None)
+        backoff = synclink.Backoff(base=1, maximum_time=60, maximum_tries=None)
 
         while True:
             assert isinstance(self.websocket, aiohttp.ClientWebSocketResponse)
@@ -124,7 +124,7 @@ class Websocket:
                 if msg.data == 1011:
                     # Lavalink encountered an internal error which can not be fixed...
                     # Consider updating Lavalink...
-                    logger.error('Internal Lavalink Error encountered. Terminating WaveLink without retries.'
+                    logger.error('Internal Lavalink Error encountered. Terminating synclink without retries.'
                                  'Consider updating your Lavalink Server.')
 
                     self.listener.cancel()
@@ -138,7 +138,7 @@ class Websocket:
             return
 
         if op == "stats":
-            self.node.stats = wavelink.Stats(self.node, data)
+            self.node.stats = synclink.Stats(self.node, data)
             return
 
         try:
@@ -176,7 +176,7 @@ class Websocket:
 
         if name.startswith("Track"):
             base64_ = data.get('track')
-            track = await self.node.build_track(cls=wavelink.Track, identifier=base64_)
+            track = await self.node.build_track(cls=synclink.Track, identifier=base64_)
 
             payload["track"] = track
 
@@ -200,7 +200,7 @@ class Websocket:
         return event, payload
 
     def dispatch(self, event, *args: Any, **kwargs: Any) -> None:
-        self.node.bot.dispatch(f"wavelink_{event}", *args, **kwargs)
+        self.node.bot.dispatch(f"synclink_{event}", *args, **kwargs)
 
     async def send(self, **data: Any) -> None:
         if self.is_connected():
