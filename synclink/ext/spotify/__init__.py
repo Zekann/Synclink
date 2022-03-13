@@ -139,6 +139,9 @@ class SpotifyAsyncIterator:
         if self._limit is not None and self._count == self._limit:
             raise StopAsyncIteration
 
+        if track is None:
+            return await self.__anext__()
+
         try:
             track = self._queue.get_nowait()
         except asyncio.QueueEmpty:
