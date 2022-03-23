@@ -22,10 +22,10 @@ SOFTWARE.
 """
 
 __title__ = "Synclink"
-__author__ = "PythonistaGuild, EvieePy"
+__author__ = "Zekann"
 __license__ = "MIT"
 __copyright__ = "Copyright 2019-2022 (c) PythonistaGuild, EvieePy"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 
 from .backoff import Backoff
