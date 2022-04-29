@@ -167,7 +167,7 @@ class Player(nextcord.VoiceProtocol):
             )
 
     async def connect(self, *, timeout: float, reconnect: bool, **kwargs: Any) -> None:
-        self.guild.change_voice_state(channel=self.channel, **kwargs)
+        await self.guild.change_voice_state(channel=self.channel, **kwargs)
         self._connected = True
 
         logger.info(f"Connected to voice channel:: {self.channel.id}")
