@@ -178,6 +178,7 @@ class Player(nextcord.VoiceProtocol):
 
             await self.guild.change_voice_state(channel=None)
             self._connected = False
+            self.cleanup()
         finally:
             with contextlib.suppress(ValueError):
                 self.node._players.remove(self)
