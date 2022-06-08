@@ -25,7 +25,7 @@ __title__ = "Synclink"
 __author__ = "Zekann"
 __license__ = "MIT"
 __copyright__ = "Copyright 2019-2022 (c) PythonistaGuild, EvieePy"
-__version__ = "1.0.3"
+__version__ = "1.1.0"
 
 
 from .backoff import Backoff
@@ -37,3 +37,4 @@ from .stats import Stats
 from .tracks import *
 from .queue import *
 from . import abc as abc
+from .filters import *
