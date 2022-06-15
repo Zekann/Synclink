@@ -95,7 +95,7 @@ class Player(nextcord.VoiceProtocol):
         self.last_update: datetime.datetime = MISSING
         self.last_position: float = MISSING
 
-        self.volume: float = 100
+        self.volume: float = 1.0
         self._paused: bool = False
         self._source: Optional[abc.Playable] = None
         self._filter = None
@@ -307,17 +307,17 @@ class Player(nextcord.VoiceProtocol):
         """
         await self.set_pause(False)
 
-    async def set_volume(self, volume: int, seek: bool = False) -> None:
+    async def set_volume(self, volume: float, seek: bool = False) -> None:
         """|coro|
 
-        Set the player's volume, between 0 and 1000.
+        Set the player's volume, between 0.001 and 5.0.
 
         Parameters
         ----------
-        volume: int
-            The volume to set the player to.
+        volume: float
+            The volume to set the player to. Can be left blank to reset it to the default volume (1.0)
         """
-        self.volume = max(min(volume, 1000), 0)
+        self.volume = max(min(volume, 5.0), 0.0)
         await self.set_filter(Filter(self._filter, volume=self.volume), seek=seek)
 
     async def seek(self, position: int = 0) -> None:
@@ -333,7 +333,7 @@ class Player(nextcord.VoiceProtocol):
         await self.node._websocket.send(
             op="seek", guildId=str(self.guild.id), position=position
         )
-    
+
     async def set_filter(
         self,
         _filter: Filter,
