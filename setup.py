@@ -60,7 +60,7 @@ setuptools.setup(
     version=VERSION,
     packages=['synclink', 'synclink.ext.spotify', 'synclink.types'],
     license='MIT',
-    description='A fork of LavaLink wrapper for nextcord.py',
+    description='A fork of LavaLink wrapper for nextcord',
     long_description=README,
     include_package_data=True,
     install_requires=REQUIREMENTS,
