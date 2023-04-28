@@ -1,5 +1,5 @@
 """MIT License
-Copyright (c) 2019-2022 PythonistaGuild
+Copyright (c) 2019-Present PythonistaGuild
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
@@ -21,7 +21,7 @@ from __future__ import annotations
 
 import abc
 import collections
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 
 __all__ = (
@@ -41,7 +41,7 @@ __all__ = (
 
 class BaseFilter(abc.ABC):
 
-    def __init__(self, name: Optional[str] = None) -> None:
+    def __init__(self, name: str | None = None) -> None:
         self.name: str = name or "Unknown"
 
     def __repr__(self) -> str:
@@ -67,7 +67,7 @@ class Equalizer(BaseFilter):
         self,
         name: str = "CustomEqualizer",
         *,
-        bands: List[Tuple[int, float]]
+        bands: list[tuple[int, float]]
     ) -> None:
         super().__init__(name=name)
 
@@ -83,7 +83,7 @@ class Equalizer(BaseFilter):
         return f"<synclink.Equalizer name={self.name}>"
 
     @property
-    def _payload(self) -> List[Dict[str, float]]:
+    def _payload(self) -> list[dict[str, float]]:
         return self.bands
 
     @classmethod
@@ -168,7 +168,7 @@ class Karaoke(BaseFilter):
                f"filter_band={self.filter_band}, filter_width={self.filter_width}>"
 
     @property
-    def _payload(self) -> Dict[str, float]:
+    def _payload(self) -> dict[str, float]:
         return {
             "level":       self.level,
             "monoLevel":   self.mono_level,
@@ -216,7 +216,7 @@ class Timescale(BaseFilter):
         return f"<synclink.Timescale speed={self.speed}, pitch={self.pitch}, rate={self.rate}>"
 
     @property
-    def _payload(self) -> Dict[str, float]:
+    def _payload(self) -> dict[str, float]:
         return {
             "speed": self.speed,
             "pitch": self.pitch,
@@ -257,7 +257,7 @@ class Tremolo(BaseFilter):
         return f"<synclink.Tremolo frequency={self.frequency}, depth={self.depth}>"
 
     @property
-    def _payload(self) -> Dict[str, float]:
+    def _payload(self) -> dict[str, float]:
         return {
             "frequency": self.frequency,
             "depth":     self.depth
@@ -297,7 +297,7 @@ class Vibrato(BaseFilter):
         return f"<synclink.Vibrato frequency={self.frequency}, depth={self.depth}>"
 
     @property
-    def _payload(self) -> Dict[str, float]:
+    def _payload(self) -> dict[str, float]:
         return {
             "frequency": self.frequency,
             "depth":     self.depth
@@ -323,7 +323,7 @@ class Rotation(BaseFilter):
         return f"<synclink.Rotation speed={self.speed}>"
 
     @property
-    def _payload(self) -> Dict[str, float]:
+    def _payload(self) -> dict[str, float]:
         return {
             "rotationHz": self.speed,
         }
@@ -364,7 +364,7 @@ class Distortion(BaseFilter):
                f"scale={self.scale}>"
 
     @property
-    def _payload(self) -> Dict[str, float]:
+    def _payload(self) -> dict[str, float]:
         return {
             "sinOffset": self.sin_offset,
             "sinScale":  self.sin_scale,
@@ -428,7 +428,7 @@ class ChannelMix(BaseFilter):
                f"right_to_left={self.right_to_left}>"
 
     @property
-    def _payload(self) -> Dict[str, float]:
+    def _payload(self) -> dict[str, float]:
         return {
             "leftToLeft":   self.left_to_left,
             "leftToRight":  self.left_to_right,
@@ -494,7 +494,7 @@ class LowPass(BaseFilter):
         return f"<synclink.LowPass smoothing={self.smoothing}>"
 
     @property
-    def _payload(self) -> Dict[str, float]:
+    def _payload(self) -> dict[str, float]:
         return {
             "smoothing": self.smoothing,
         }
@@ -508,9 +508,6 @@ class Filter:
     ----------
     filter: synclink.Filter
         An instance of this filter class.
-    volume: float
-        A volume factor to apply to the track. 1.0 is the default, max is 5.0, min is 0.0.
-        A value of 1.0 means the track will play at 100% volume.
     equalizer: synclink.Equalizer
         An equalizer to apply to the track.
     karaoke: synclink.Karaoke
@@ -533,46 +530,42 @@ class Filter:
 
     def __init__(
         self,
-        _filter: Optional[Filter] = None,
+        _filter: Filter | None = None,
         /, *,
-        volume: Optional[float] = None,
-        equalizer: Optional[Equalizer] = None,
-        karaoke: Optional[Karaoke] = None,
-        timescale: Optional[Timescale] = None,
-        tremolo: Optional[Tremolo] = None,
-        vibrato: Optional[Vibrato] = None,
-        rotation: Optional[Rotation] = None,
-        distortion: Optional[Distortion] = None,
-        channel_mix: Optional[ChannelMix] = None,
-        low_pass: Optional[LowPass] = None
+        equalizer: Equalizer | None = None,
+        karaoke: Karaoke | None = None,
+        timescale: Timescale | None = None,
+        tremolo: Tremolo | None = None,
+        vibrato: Vibrato | None = None,
+        rotation: Rotation | None = None,
+        distortion: Distortion | None = None,
+        channel_mix: ChannelMix | None = None,
+        low_pass: LowPass | None = None
     ) -> None:
 
-        self.filter: Optional[Filter] = _filter
+        self.filter: Filter | None = _filter
 
-        self.volume: Optional[float] = volume
-        self.equalizer: Optional[Equalizer] = equalizer
-        self.karaoke: Optional[Karaoke] = karaoke
-        self.timescale: Optional[Timescale] = timescale
-        self.tremolo: Optional[Tremolo] = tremolo
-        self.vibrato: Optional[Vibrato] = vibrato
-        self.rotation: Optional[Rotation] = rotation
-        self.distortion: Optional[Distortion] = distortion
-        self.channel_mix: Optional[ChannelMix] = channel_mix
-        self.low_pass: Optional[LowPass] = low_pass
+        self.equalizer: Equalizer | None = equalizer
+        self.karaoke: Karaoke | None = karaoke
+        self.timescale: Timescale | None = timescale
+        self.tremolo: Tremolo | None = tremolo
+        self.vibrato: Vibrato | None = vibrato
+        self.rotation: Rotation | None = rotation
+        self.distortion: Distortion | None = distortion
+        self.channel_mix: ChannelMix | None = channel_mix
+        self.low_pass: LowPass | None = low_pass
 
     def __repr__(self) -> str:
-        return f"<synclink.Filter volume={self.volume}, equalizer={self.equalizer}, " \
+        return f"<synclink.Filter equalizer={self.equalizer}, " \
                f"karaoke={self.karaoke}, timescale={self.timescale}, tremolo={self.tremolo}, " \
                f"vibrato={self.vibrato}, rotation={self.rotation}, distortion={self.distortion}, " \
                f"channel_mix={self.channel_mix}, low_pass={self.low_pass}>"
 
     @property
-    def _payload(self) -> Dict[str, Any]:
+    def _payload(self) -> dict[str, Any]:
 
         payload = self.filter._payload.copy() if self.filter else {}
 
-        if self.volume:
-            payload["volume"] = self.volume
         if self.equalizer:
             payload["equalizer"] = self.equalizer._payload
         if self.karaoke:
