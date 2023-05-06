@@ -51,3 +51,4 @@ class TrackEventType(Enum):
 
     START = 'TrackStartEvent'
     END = 'TrackEndEvent'
+    STUCK = 'TrackStuckEvent'
